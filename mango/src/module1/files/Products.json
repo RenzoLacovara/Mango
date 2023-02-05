@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Uzumaki",
+    "description": "Novela de terror por el mangaka Junji Ito",
+    "price": 100,
+    "thumbnail": "no image",
+    "code": 111,
+    "stock": 30,
+    "id": 1
+  },
+  {
+    "title": "Akira",
+    "description": "novela cyberpunk por el mangaka Katsuhiro Ōtomo",
+    "price": 100,
+    "thumbnail": "no image",
+    "code": 112,
+    "stock": 30,
+    "id": 2
+  },
+  {
+    "title": "Mob Psycho",
+    "description": "Novela de aventura por ONE",
+    "price": 130,
+    "thumbnail": "no image",
+    "code": 113,
+    "stock": 25,
+    "id": 3
+  }
+]
