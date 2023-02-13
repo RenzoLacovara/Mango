@@ -1,5 +1,5 @@
 import fs from "fs";
-class Product {
+class Cart {
   static id = 1;
 
   constructor(
@@ -20,10 +20,10 @@ class Product {
     this.stock = stock;
     this.category = category;
     this.status = status;
-    this.id = Product.id++;
+    this.id = Cart.id++;
   }
 }
-class ProductManager {
+class CartManager {
   #products;
   #productDirPath;
   #productsFilePath;
@@ -54,7 +54,7 @@ class ProductManager {
     category,
     status,
   }) => {
-    let newProduct = new Product(
+    let newProduct = new Cart(
       title,
       description,
       price,
@@ -147,4 +147,4 @@ class ProductManager {
     }
   };
 }
-export default ProductManager;
+export default CartManager;

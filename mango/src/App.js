@@ -1,30 +1,27 @@
-import { productManager } from "./ProductManager.js";
 import express from "express";
-const SERVER_PORT = 8080;
+import productRouter from "./routes/products.router.js";
+import cartRouter from "./routes/cart.router.js";
+import __dirname from "./dirname.js";
+import handlebars from "express-handlebars";
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.engine("handlebars", handlebars.engine());
+app.set("views", __dirname + "/views");
+app.set("view engine", "handlebars");
 
-app.get("/products/query", async (req, res) => {
-  const productos = await JSON.stringify(productManager.getProducts());
-  let limit = parseInt(req.query.limit);
-  if (limit) {
-    function limitarObjetos(array, limit) {
-      return array.slice(0, limit);
-    }
-    res.send(limitarObjetos(productos, limit));
-  }
-  res.send(productos);
+app.use(express.static(__dirname + "/public"));
+app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
+
+app.get("/saludo", (req, res) => {
+  let user = [{ name: "renzo" }, { name: "nicolas" }, { name: "lacovara" }];
+  let index = ~~(Math.random() * user.length);
+  res.render("hello", user[index]);
 });
-
-app.get("/products/:codeId", async (req, res) => {
-  const producto = await productManager.getProductById(req.params.codeId);
-  if (producto) {
-    res.send(producto);
-  }
-  res.send({ message: "Producto no encontrado." });
-});
-
+const SERVER_PORT = 9090;
 app.listen(SERVER_PORT, () => {
   console.log(`server ${SERVER_PORT}`);
+  console.log(__dirname);
 });
