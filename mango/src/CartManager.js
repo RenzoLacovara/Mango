@@ -1,149 +1,83 @@
 import fs from "fs";
 class Cart {
   static id = 1;
-
-  constructor(
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    stock,
-    category,
-    status
-  ) {
-    this.title = title;
-    this.description = description;
-    this.price = price;
-    this.thumbnail = thumbnail;
-    this.code = code;
-    this.stock = stock;
-    this.category = category;
-    this.status = status;
+  constructor() {
+    this.products = [];
     this.id = Cart.id++;
   }
 }
 class CartManager {
-  #products;
-  #productDirPath;
-  #productsFilePath;
+  #carts;
+  #cartDirPath;
+  #cartsFilePath;
   #fileSystem;
 
   constructor() {
-    this.#products = [];
-    this.#productDirPath = "./module1/files";
-    this.#productsFilePath = this.#productDirPath + "/Products.json";
+    this.#carts = [];
+    this.#cartDirPath = "./module1/files";
+    this.#cartsFilePath = this.#cartDirPath + "/Carts.json";
     this.#fileSystem = fs;
   }
   #prepareDir = async () => {
-    await this.#fileSystem.promises.mkdir(this.#productDirPath, {
+    await this.#fileSystem.promises.mkdir(this.#cartDirPath, {
       recursive: true,
     });
-    if (!this.#fileSystem.existsSync(this.#productsFilePath)) {
-      await this.#fileSystem.promises.writeFile(this.#productsFilePath, "[]");
+    if (!this.#fileSystem.existsSync(this.#cartsFilePath)) {
+      await this.#fileSystem.promises.writeFile(this.#cartsFilePath, "[]");
     }
   };
 
-  addProduct = async ({
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    stock,
-    category,
-    status,
-  }) => {
-    let newProduct = new Cart(
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-      category,
-      status
-    );
+  createCart = async (products) => {
+    let newCart = new Cart();
+    newCart.products.push(products);
     try {
       await this.#prepareDir();
       await this.getProducts();
 
-      if (this.#products.some((product) => product.code === code)) {
+      if (this.#carts.some((cart) => cart.id === newCart.id)) {
         console.log("Codigo repetido");
       } else {
-        this.#products.push(newProduct);
-        console.log(this.#products);
+        this.#carts.push(newCart);
+        console.log(this.#carts);
         this.#fileSystem.promises.writeFile(
-          this.#productsFilePath,
-          JSON.stringify(this.#products)
+          this.#cartsFilePath,
+          JSON.stringify(this.#carts)
         );
       }
     } catch (error) {
       throw Error(
-        `Error creando producto nuevo: ${JSON.stringify(
-          newProduct
+        `Error creando cart nuevo: ${JSON.stringify(
+          newCart
         )}, detalle del error: ${error}`
       );
     }
   };
-  getProducts = async () => {
+  getCarts = async () => {
     try {
       await this.#prepareDir();
-      let prodFile = await this.#fileSystem.promises.readFile(
-        this.#productsFilePath,
+      let cartFile = await this.#fileSystem.promises.readFile(
+        this.#cartsFilePath,
         "utf-8"
       );
-      this.#products = JSON.parse(prodFile);
-      console.log(this.#products);
-      return this.#products;
+      this.#carts = JSON.parse(cartFile);
+      console.log(this.#carts);
+      return this.#carts;
     } catch (error) {
-      throw Error(`Error consultando los productos por archivo, valide el archivo: ${
-        this.#productDirPath
+      throw Error(`Error consultando los carts por archivo, valide el archivo: ${
+        this.#cartDirPath
       },
        detalle del error: ${error}`);
     }
   };
-  getProductById = async (code) => {
-    await this.getProducts();
-    let productfilter = this.#products.findIndex(
-      (product) => product.id === code
-    );
-    if (productfilter === -1) {
-      console.log(`Codigo: ${code} no arroja resultados`);
+  getCartById = async (id) => {
+    await this.getCarts();
+    let cartfilter = this.#carts.findIndex((cart) => cart.id === id);
+    if (cartfilter === -1) {
+      console.log(`Codigo: ${id} no arroja resultados`);
     } else {
-      console.log(`Producto encontrado:`);
-      console.log(this.#products[productfilter]);
-      return this.#products[productfilter];
-    }
-  };
-
-  updateProduct = async (id, newProd) => {
-    await this.getProducts();
-    const index = this.#products.findIndex((p) => p.id === id);
-    if (index !== -1) {
-      this.#products[index] = { ...this.#products[index], ...newProd };
-    } else {
-      console.log(`Producto no encontrado:`);
-    }
-    this.#fileSystem.promises.writeFile(
-      this.#productsFilePath,
-      JSON.stringify(this.#products)
-    );
-    return this.#products;
-  };
-
-  deleteProduct = async (code) => {
-    await this.getProducts();
-    if (this.#products.find((prod) => prod.id === code)) {
-      let filteredProducts = this.#products.filter((prod) => prod.id !== code);
-      this.#products = filteredProducts;
-      this.#fileSystem.promises.writeFile(
-        this.#productsFilePath,
-        JSON.stringify(this.#products)
-      );
-      console.log(this.#products);
-    } else {
-      console.log(`producto con codigo ${code} no encontrado`);
+      console.log(`cart encontrado:`);
+      console.log(this.#carts[cartfilter]);
+      return this.#carts[cartfilter];
     }
   };
 }
