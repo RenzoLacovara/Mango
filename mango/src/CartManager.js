@@ -1,4 +1,5 @@
 import fs from "fs";
+
 class Cart {
   static id = 1;
   constructor() {
@@ -27,12 +28,11 @@ class CartManager {
     }
   };
 
-  createCart = async (products) => {
+  createCart = async () => {
     let newCart = new Cart();
-    newCart.products.push(products);
     try {
       await this.#prepareDir();
-      await this.getProducts();
+      await this.getCarts();
 
       if (this.#carts.some((cart) => cart.id === newCart.id)) {
         console.log("Codigo repetido");
@@ -78,6 +78,25 @@ class CartManager {
       console.log(`cart encontrado:`);
       console.log(this.#carts[cartfilter]);
       return this.#carts[cartfilter];
+    }
+  };
+  AddToCart = async (cid, newProd) => {
+    try {
+      await this.#prepareDir();
+      await this.getCarts();
+      let filterCart = await this.getCartById(cid);
+      if (filterCart) {
+        filterCart.products.push(newProd);
+        this.#fileSystem.promises.writeFile(
+          this.#cartsFilePath,
+          JSON.stringify(this.#carts)
+        );
+      }
+    } catch (err) {
+      throw Error(`Error consultando los carts por archivo, valide el archivo: ${
+        this.#cartDirPath
+      },
+     detalle del error: ${err}`);
     }
   };
 }

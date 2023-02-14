@@ -13,7 +13,7 @@ app.set("view engine", "handlebars");
 
 app.use(express.static(__dirname + "/public"));
 app.use("/api/products", productRouter);
-app.use("/api/cart", cartRouter);
+app.use("/api/carts", cartRouter);
 
 app.get("/saludo", (req, res) => {
   let user = [{ name: "renzo" }, { name: "nicolas" }, { name: "lacovara" }];
