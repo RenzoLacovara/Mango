@@ -73,7 +73,7 @@ class ProductManager {
       } else {
         this.#products.push(newProduct);
         console.log(this.#products);
-        this.#fileSystem.promises.writeFile(
+        return this.#fileSystem.promises.writeFile(
           this.#productsFilePath,
           JSON.stringify(this.#products)
         );
@@ -125,11 +125,10 @@ class ProductManager {
     } else {
       console.log(`Producto no encontrado:`);
     }
-    this.#fileSystem.promises.writeFile(
+    return this.#fileSystem.promises.writeFile(
       this.#productsFilePath,
       JSON.stringify(this.#products)
     );
-    return this.#products;
   };
 
   deleteProduct = async (code) => {

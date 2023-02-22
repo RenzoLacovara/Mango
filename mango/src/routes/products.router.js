@@ -7,7 +7,12 @@ const router = Router();
 let counter = 1;
 
 let products = await pm.getProducts();
-
+router.get("/list", (req, res) => {
+  res.render("home", products);
+});
+router.get("/realtimeproducts", (req, res) => {
+  res.render("realTimeProducts", products);
+});
 router.get("/", async (req, res) => {
   res.send(products);
 });

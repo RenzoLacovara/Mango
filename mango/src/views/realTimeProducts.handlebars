@@ -1,0 +1,21 @@
+<div>
+  <div>
+    <h1>Productos en tiempo real!</h1>
+  </div>
+  <div>
+    {{#each this}}
+       <article>
+        <h2>{{title}}
+            <p>{{description}}</p>
+                <h3> {{price}}
+                    <p>{{stock}}</p>
+                </h3>
+            </p>
+        </h2>
+        <button id="borrar" value="{{id}}">Borrar producto</button>
+       </article>
+    {{/each}}
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>

@@ -16,5 +16,23 @@
     "code": 113,
     "stock": 25,
     "id": 3
+  },
+  {
+    "title": "Akira",
+    "description": "Novela de cyberpunk",
+    "price": 130,
+    "thumbnail": "no image",
+    "code": 113,
+    "stock": 25,
+    "id": 2
+  },
+  {
+    "title": "Monster",
+    "description": "Novela de terror",
+    "price": 130,
+    "thumbnail": "no image",
+    "code": 113,
+    "stock": 25,
+    "id": 4
   }
 ]
