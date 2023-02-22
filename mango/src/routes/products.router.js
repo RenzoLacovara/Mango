@@ -26,16 +26,11 @@ router.get("/:pid", async (req, res) => {
   }
 });
 router.post("/add", uploader.single("file"), (req, res) => {
-  if (!req.file) {
-    return res
-      .status(404)
-      .send({ status: "error", message: "Please enter a file" });
-  }
   let newProd = req.body;
   newProd.id = counter++;
   newProd.thumbnail = req.file.path;
   products.push(newProd);
-  res.send({ status: "success", message: `pet added` });
+  res.send({ status: "success", message: `product added` });
 });
 
 router.put("/:pid", async (req, res) => {
