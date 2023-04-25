@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "date": "2017-01-01",
+    "weather": "rainy",
+    "visibility": "poor",
+    "comment": "scary trip"
+  },
+  {
+    "id": 2,
+    "date": "2018-04-05",
+    "weather": "sunny",
+    "visibility": "good",
+    "comment": "nice trip"
+  }
+]
